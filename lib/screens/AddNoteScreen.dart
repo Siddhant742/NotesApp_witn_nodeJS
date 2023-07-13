@@ -32,15 +32,18 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
     Navigator.pop(context);
   }
   updateNote(){
-
+    widget.note!.title = titleController.text;
+    widget.note!.content = contentController.text;
    Provider.of<NotesProvider>(context, listen: false).updateNote(widget.note!);
    Navigator.pop(context);
   }
   @override
   void initState() {
-    titleController.text = widget.note!.title!;
-    contentController.text = widget.note!.title!;
-    super.initState();
+    if( widget.isUpdate) {
+      titleController.text = widget.note!.title!;
+      contentController.text = widget.note!.content!;
+      super.initState();
+    }
   }
 
   @override
@@ -49,48 +52,50 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
       appBar: AppBar(
         title: Text('Add Note'),
         actions: [IconButton(onPressed: () {
-          if(widget.isUpdate == false) {
-            addNewNote();
+          if(widget.isUpdate == true) {
+            updateNote();
           }
           else{
-
-            updateNote();
+            addNewNote();
           }
         }, icon: Icon(Icons.check))],
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            TextField(
-              controller: titleController,
-              autofocus: widget.isUpdate == false ? true:false,
-              maxLines: 1,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 26,
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical:2 , horizontal: 12),
+          child: Column(
+            children: [
+              TextField(
+                controller: titleController,
+                autofocus: widget.isUpdate == false ? true:false,
+                maxLines: 1,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 26,
+                ),
+                decoration:
+                    InputDecoration(hintText: 'Title', border: InputBorder.none),
+                onSubmitted: (val) {
+                  if (val != null) {
+                    noteFocus.requestFocus();
+                  }
+                },
               ),
-              decoration:
-                  InputDecoration(hintText: 'Title', border: InputBorder.none),
-              onSubmitted: (val) {
-                if (val != null) {
-                  noteFocus.requestFocus();
-                }
-              },
-            ),
-            TextField(
-              controller: contentController,
-              focusNode: noteFocus,
-              maxLines: null,
-              style: TextStyle(
-                fontSize: 20,
-              ),
-              decoration:
-                  InputDecoration(hintText: 'Note', border: InputBorder.none),
-              // onChanged: (val){
-              //   contentController.text = val;
-              // },
-            )
-          ],
+              TextField(
+                controller: contentController,
+                focusNode: noteFocus,
+                maxLines: null,
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+                decoration:
+                    InputDecoration(hintText: 'Note', border: InputBorder.none),
+                // onChanged: (val){
+                //   contentController.text = val;
+                // },
+              )
+            ],
+          ),
         ),
       ),
     );

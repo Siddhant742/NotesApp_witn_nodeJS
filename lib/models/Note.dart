@@ -20,7 +20,7 @@ class Note {
         dateadded: DateTime.tryParse(map['dateadded']));
   }
 
-  Map<String, dynamic>toMap(){
+  Map<String, dynamic> toMap(){
     return {
       'id': id,
       'userid': userid,
