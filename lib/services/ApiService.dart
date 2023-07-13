@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:notes_app/models/Note.dart';
 
@@ -16,5 +15,18 @@ class ApiService {
     var response = await http.post(requestUri, body: note.toMap() );
     var decoded = jsonDecode(response.body);
     print(decoded);
+  }
+  static Future<List<Note>> fetchNote(String userid)async {
+    Uri requestUri = Uri.parse(_baseUrl+ '/list');
+    var response = await http.post(requestUri, body: { 'userid': userid });
+    var decoded = jsonDecode(response.body);
+    print(decoded);
+    List<Note> notes = [];
+
+    for( var noteMap in decoded){
+      var newNote = Note.fromMap(noteMap);
+      notes.add(newNote);
+    }
+    return notes;
   }
 }

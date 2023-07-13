@@ -27,8 +27,8 @@ class HomeScreen extends StatelessWidget {
                         )));
           },
           child: Icon(Icons.add)),
-      body: SafeArea(
-        child: context.watch<NotesProvider>().notes.length < 1
+      body:SafeArea(
+        child: (context.watch<NotesProvider>().notes.length < 1)
             ? Center(
                 child: Text('No Notes Found!'),
               )
