@@ -36,4 +36,8 @@ class NotesProvider with ChangeNotifier{
     sortNotes();
     notifyListeners();
   }
+  List<Note>filteredNote(String searchQuery){
+    List<Note> filterednotes = notes.where((element) => element.title!.toLowerCase().contains(searchQuery.toLowerCase()) || element.content!.toLowerCase().contains(searchQuery.toLowerCase())).toList();
+    return filterednotes;
+  }
 }
